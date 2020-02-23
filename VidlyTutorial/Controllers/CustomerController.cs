@@ -17,7 +17,7 @@ namespace VidlyTutorial.Controllers
     public class CustomerController : Controller
     {
 
-        Uri baseAddress = new Uri("http://localhost:54519/api");
+        Uri baseAddress = new Uri("http://localhost:62930/api");
         HttpClient client;
 
         public CustomerController()
@@ -29,7 +29,7 @@ namespace VidlyTutorial.Controllers
         public ActionResult Index()
         {
             List<Customer> Obj = new List<Customer>();
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress+ "/Customer/Customers").Result;
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress+ "/CustomerApi/Customers").Result;
             if(response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
@@ -43,7 +43,7 @@ namespace VidlyTutorial.Controllers
         {
             string data = JsonConvert.SerializeObject(New.customer);
             StringContent content = new StringContent(data, Encoding.UTF8,"application/json");
-            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/Customer/AddCustomer", content).Result;
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/CustomerApi/AddCustomer", content).Result;
             if(response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -55,8 +55,8 @@ namespace VidlyTutorial.Controllers
         {
             RootObject Obj = new RootObject();
             List<MembershipType> Mem = new List<MembershipType>();
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Customer/CustomerById?id="+Id).Result;
-            HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/Customer/Members").Result;
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/CustomerApi/CustomerById?id=" + Id).Result;
+            HttpResponseMessage response1 = client.GetAsync(client.BaseAddress + "/CustomerApi/Members").Result;
             if (response.IsSuccessStatusCode && response1.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
@@ -92,7 +92,7 @@ namespace VidlyTutorial.Controllers
             string data = JsonConvert.SerializeObject(newCustomer.customer);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
             //HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/Customer/AddCustomer", content).Result;
-            HttpResponseMessage response = client.PutAsync(client.BaseAddress + "/Customer/UpdateCustomer", content).Result;
+            HttpResponseMessage response = client.PutAsync(client.BaseAddress + "/CustomerApi/UpdateCustomer", content).Result;
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
@@ -103,7 +103,7 @@ namespace VidlyTutorial.Controllers
         public ActionResult CreateCustomer()
         {
             List<MembershipType> members = new List<MembershipType>();
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/Customer/Members").Result;
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/CustomerApi/Members").Result;
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
@@ -118,7 +118,7 @@ namespace VidlyTutorial.Controllers
 
         public ActionResult DeleteCustomer(int id)
         {
-            HttpResponseMessage response = client.DeleteAsync(client.BaseAddress + "/Customer/DeleteCustomer?id="+id).Result;
+            HttpResponseMessage response = client.DeleteAsync(client.BaseAddress + "/CustomerApi/DeleteCustomer?id=" + id).Result;
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
